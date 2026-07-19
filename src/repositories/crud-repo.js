@@ -19,14 +19,17 @@ class CrudRepo {
   }
   async destroy(data) {
     try {
-      const response = await this.model.destroy(data, {
+      const response = await this.model.destroy({
         where: {
           id: data,
         },
       });
+      console.log("Response =", response);
+      if (response === 0) {
+        throw new AppError("The resource is not found", StatusCodes.NOT_FOUND);
+      }
       return response;
     } catch (error) {
-      logger.error(error.message);
       throw error;
     }
   }
@@ -47,9 +50,9 @@ class CrudRepo {
   }
   async update(data) {
     try {
-      const response = await this.model.update(data, {
+      const response = await this.model.update({
         where: {
-          id: id,
+          id: data,
         },
       });
       return response;

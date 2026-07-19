@@ -1,3 +1,4 @@
+const { StatusCodes } = require("http-status-codes");
 const { logger } = require("../config");
 const { AirplaneRepo } = require("../repositories");
 const { AppError } = require("../utils");
@@ -33,4 +34,21 @@ async function getAirplane(id) {
     throw error;
   }
 }
-module.exports = { createPlanes, getAirplanes, getAirplane };
+
+async function destroyPlane(id) {
+  try {
+    const response = await airplaneRepo.destroy(id);
+    return response;
+  } catch (error) {
+    console.log(error.statusCode);
+    if (error.statusCode === StatusCodes.NOT_FOUND) {
+      throw new AppError("The plane is not present", StatusCodes.NOT_FOUND);
+    }
+    throw new AppError(
+      "Cannot delete plane",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+
+module.exports = { createPlanes, getAirplanes, getAirplane, destroyPlane };
