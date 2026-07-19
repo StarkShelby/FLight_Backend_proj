@@ -23,4 +23,14 @@ async function getAirplanes() {
     throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
-module.exports = { createPlanes, getAirplanes };
+
+async function getAirplane(id) {
+  try {
+    const airplane = await airplaneRepo.get(id);
+    return airplane;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+}
+module.exports = { createPlanes, getAirplanes, getAirplane };
