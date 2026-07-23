@@ -5,7 +5,6 @@ const { AppError } = require("../utils");
 const airplaneRepo = new AirplaneRepo();
 
 async function createPlanes(data) {
-  console.log("service hit");
   try {
     const airplane = await airplaneRepo.create(data);
     return airplane;
