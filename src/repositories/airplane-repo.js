@@ -1,9 +1,9 @@
 const { CrudRepo } = require("./crud-repo");
-const { Flights } = require("../models");
+const { Airplane } = require("../models");
 class AirplaneRepo extends CrudRepo {
   constructor() {
     console.log("repo HIt");
-    super(Flights);
+    super(Airplane);
   }
 }
 module.exports = AirplaneRepo;

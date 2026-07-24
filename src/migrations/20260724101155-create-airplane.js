@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Flights", {
+    await queryInterface.createTable("Airplanes", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,14 +11,12 @@ module.exports = {
       },
       flightName: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       capacity: {
         type: Sequelize.INTEGER,
       },
       boardingTime: {
         type: Sequelize.DATE,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Flights");
+    await queryInterface.dropTable("Airplanes");
   },
 };
