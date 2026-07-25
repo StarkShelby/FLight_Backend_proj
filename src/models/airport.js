@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
       },
-      cityId: {
+      citId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
