@@ -14,23 +14,29 @@ async function createAirport(data) {
   }
 }
 
-async function getAirport() {
+async function getAirports() {
   try {
     const airport = await airportRepo.getall();
     return airport;
   } catch (error) {
     console.error(error.message);
-    throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
+    throw new AppError(
+      "Cannot fetch data of all the airports",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
   }
 }
 
 async function getAirport(id) {
   try {
     const airport = await airportRepo.get(id);
-    return airplane;
+    return airport;
   } catch (error) {
     console.error(error.message);
-    throw error;
+    throw new AppError(
+      "Cannot fetch data of the airport",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
   }
 }
 
@@ -50,4 +56,4 @@ async function destroyAirport(id) {
   }
 }
 
-module.exports = { createAirport, getAirport, getAirport, destroyAirport };
+module.exports = { createAirport, getAirports, getAirport, destroyAirport };

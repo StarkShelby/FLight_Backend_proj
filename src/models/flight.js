@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       flightNumber: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       airplaneId: {
         type: DataTypes.INTEGER,
@@ -33,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       departureAirportId: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       arrivalAirportId: {
         type: DataTypes.STRING,

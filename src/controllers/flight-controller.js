@@ -16,11 +16,11 @@ async function createFlight(req, res) {
       totalSeats: req.body.totalSeats,
     });
     SuccessResponse.data = response;
-    return res.status(StatusCodes.CREATED).json(SuccessResponse.success);
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
     return res
-      .status(error.statusCodes || StatusCodes.INTERNAL_SERVER_ERROR)
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
       .json(ErrorResponse);
   }
 }
@@ -29,10 +29,12 @@ async function getFlights(req, res) {
   try {
     const response = await FlightServices.getFlights();
     SuccessResponse.data = response;
-    return res.status(StatusCodes.OK).json(SuccessResponse.success);
+    return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(error.statusCodes || StatusCodes.INTERNAL_SERVER_ERROR);
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
   }
 }
 
@@ -40,20 +42,28 @@ async function getFlight(req, res) {
   try {
     const response = await FlightServices.getFlight(req.params.id);
     SuccessResponse.data = response;
-    return res.status(StatusCodes.OK).json(SuccessResponse.success);
+    return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(error.statusCodes || StatusCodes.INTERNAL_SERVER_ERROR);
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
   }
 }
 async function destroyFlight(req, res) {
   try {
     const response = await FlightServices.destroyFlight(req.params.id);
+    SuccessResponse.message = "Flight deleted successfully";
+    if (response === 0) {
+      throw new AppError("The Flight is not present", StatusCodes.NOT_FOUND);
+    }
     SuccessResponse.data = response;
-    return res.status(StatusCodes.OK).json(SuccessResponse.success);
+    return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(error.statusCodes || StatusCodes.INTERNAL_SERVER_ERROR);
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
   }
 }
 

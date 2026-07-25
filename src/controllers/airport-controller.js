@@ -18,9 +18,9 @@ async function createAirport(req, res) {
   }
 }
 
-async function getAirport(req, res) {
+async function getAirports(req, res) {
   try {
-    const airport = await AirportServices.getAirport();
+    const airport = await AirportServices.getAirports();
     SuccessResponse.data = airport;
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
@@ -37,7 +37,6 @@ async function getAirport(req, res) {
   } catch (error) {
     ErrorResponse.error = error;
     return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
-    throw error;
   }
 }
 
@@ -52,4 +51,4 @@ async function deleteAirport(req, res) {
     throw error;
   }
 }
-module.exports = { createAirport, getAirport, getAirport, deleteAirport };
+module.exports = { createAirport, getAirports, getAirport, deleteAirport };

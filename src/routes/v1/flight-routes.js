@@ -12,4 +12,8 @@ router.post(
   FlightController.createFlight,
 );
 
+router.get("/", FlightController.getFlights);
+router.get("/:id", FlightController.getFlight);
+router.delete("/:id", FlightController.destroyFlight);
+
 module.exports = router;
