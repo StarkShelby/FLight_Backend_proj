@@ -59,9 +59,39 @@ async function destroyFlight(id) {
     throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
+
+async function getAllFlights(query) {
+  let customFilter = {};
+
+  if (query.trips) {
+    const [departureAirportId, arrivalAirportId] = query.trips.split("-");
+
+    customFilter = {
+      departureAirportId,
+      arrivalAirportId,
+    };
+  }
+
+  try {
+    console.log(customFilter);
+
+    const flights = await flightRepo.getAllFlights(customFilter);
+    if (flights.length === 0) {
+      throw new AppError("No Flights found", StatusCodes.NOT_FOUND);
+    }
+    return flights;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof AppError) throw error;
+
+    throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
 module.exports = {
   createFlight,
   getFlights,
   getFlight,
   destroyFlight,
+  getAllFlights,
 };

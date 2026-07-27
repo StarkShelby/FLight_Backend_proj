@@ -67,9 +67,24 @@ async function destroyFlight(req, res) {
   }
 }
 
+async function getAllFlights(req, res) {
+  try {
+    console.log(req.query);
+    const response = await FlightServices.getAllFlights(req.query);
+    SuccessResponse.data = response;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
+  }
+}
+
 module.exports = {
   createFlight,
   getFlights,
+  getAllFlights,
   getFlight,
   destroyFlight,
 };

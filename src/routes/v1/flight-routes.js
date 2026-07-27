@@ -13,6 +13,8 @@ router.post(
 );
 
 router.get("/", FlightController.getFlights);
+//v1/flights/search?trips=MUM-DEL
+router.get("/search", FlightController.getAllFlights);
 router.get("/:id", FlightController.getFlight);
 router.delete("/:id", FlightController.destroyFlight);
 
