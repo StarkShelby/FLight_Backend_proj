@@ -13,8 +13,10 @@ async function createAirport(req, res) {
     SuccessResponse.data = airport;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
-    throw error;
+    ErrorResponse.error = error;
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
   }
 }
 
@@ -25,8 +27,9 @@ async function getAirports(req, res) {
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
-    throw error;
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(ErrorResponse);
   }
 }
 async function getAirport(req, res) {
@@ -36,7 +39,9 @@ async function getAirport(req, res) {
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
+    return res
+      .status(error.statusCode || StatusCodes.NOT_FOUND)
+      .json(ErrorResponse);
   }
 }
 
@@ -47,8 +52,9 @@ async function deleteAirport(req, res) {
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
-    throw error;
+    return res
+      .status(error.statusCode || StatusCodes.NOT_FOUND)
+      .json(ErrorResponse);
   }
 }
 module.exports = { createAirport, getAirports, getAirport, deleteAirport };

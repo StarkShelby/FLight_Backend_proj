@@ -1,6 +1,7 @@
 const { FlightRepo } = require("../repositories");
 const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils");
+const { Op } = require("sequelize");
 const flightRepo = new FlightRepo();
 
 async function createFlight(data) {
@@ -62,6 +63,7 @@ async function destroyFlight(id) {
 
 async function getAllFlights(query) {
   let customFilter = {};
+  let sortFilter = [];
 
   if (query.trips) {
     const [departureAirportId, arrivalAirportId] = query.trips.split("-");
@@ -71,11 +73,38 @@ async function getAllFlights(query) {
       arrivalAirportId,
     };
   }
+  if (query.price) {
+    const [minPrice, maxprice] = query.price.split("-");
+    customFilter.price = {
+      [Op.between]: [minPrice, maxprice === undefined ? 20000 : maxprice],
+    };
+  }
+
+  if (query.travellers) {
+    customFilter.totalSeats = {
+      [Op.gte]: query.travellers,
+    };
+  }
+  if (query.tripDate) {
+    const startDay = `${query.tripDate} 00:00:00`;
+    const endDay = `${query.tripDate} 23:59:00`;
+    customFilter.departureTime = {
+      [Op.between]: [startDay, endDay],
+    };
+  }
+
+  if (query.sort) {
+    const params = query.sort.split(",");
+    const sortFilters = params.map((param) => {
+      return param.split("_");
+    });
+    sortFilter = sortFilters;
+  }
 
   try {
     console.log(customFilter);
 
-    const flights = await flightRepo.getAllFlights(customFilter);
+    const flights = await flightRepo.getAllFlights(customFilter, sortFilter);
     if (flights.length === 0) {
       throw new AppError("No Flights found", StatusCodes.NOT_FOUND);
     }

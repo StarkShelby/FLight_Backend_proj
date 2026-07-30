@@ -26,7 +26,7 @@ module.exports = {
       departureAirportId: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: false,
         references: {
           model: "Airports",
           key: "code",
