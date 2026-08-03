@@ -58,6 +58,29 @@ class FlightRepo extends CrudRepo {
     });
     return response;
   }
+
+  async updateRemainingSeats(flightId, seats, dec = true, transaction) {
+    const flight = await Flight.findByPk(flightId, {
+      transaction,
+      lock: transaction.LOCK.UPDATE,
+    });
+    if (!flight) {
+      throw new Error("Flight is not present mate!");
+    }
+    if (parseInt(dec)) {
+      await flight.decrement("totalSeats", {
+        by: seats,
+        transaction,
+      });
+    } else {
+      await flight.increment("totalSeats", {
+        by: seats,
+        transaction,
+      });
+    }
+    await flight.reload({ transaction });
+    return flight;
+  }
 }
 
 module.exports = FlightRepo;

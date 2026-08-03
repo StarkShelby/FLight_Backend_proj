@@ -2,6 +2,7 @@ const { FlightRepo } = require("../repositories");
 const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils");
 const { Op } = require("sequelize");
+const db = require("../models");
 const flightRepo = new FlightRepo();
 
 async function createFlight(data) {
@@ -117,10 +118,32 @@ async function getAllFlights(query) {
   }
 }
 
+async function updateSeats(data) {
+  try {
+    const transaction = await db.sequelize.transaction();
+    const seat = await flightRepo.updateRemainingSeats(
+      data.flightId,
+      data.seats,
+      data.dec,
+      transaction,
+    );
+    transaction.commit();
+
+    return seat;
+  } catch (error) {
+    console.error(error.message);
+    if (error instanceof AppError) throw error;
+    transaction.rollback();
+
+    throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
 module.exports = {
   createFlight,
   getFlights,
   getFlight,
   destroyFlight,
   getAllFlights,
+  updateSeats,
 };

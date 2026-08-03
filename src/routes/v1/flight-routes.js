@@ -1,6 +1,7 @@
 const express = require("express");
 const { FlightController } = require("../../controllers");
 const { FlightMiddlewares } = require("../../middlewares");
+const { FlightServices } = require("../../services");
 
 const router = express.Router();
 
@@ -17,5 +18,8 @@ router.get("/", FlightController.getFlights);
 router.get("/search", FlightController.getAllFlights);
 router.get("/:id", FlightController.getFlight);
 router.delete("/:id", FlightController.destroyFlight);
+
+// api/v1/flights/:id/update. PATCH request
+router.patch("/:id/seats", FlightController.updateSeats);
 
 module.exports = router;
