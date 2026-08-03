@@ -67,7 +67,7 @@ class FlightRepo extends CrudRepo {
     if (!flight) {
       throw new Error("Flight is not present mate!");
     }
-    if (parseInt(dec)) {
+    if (+dec) {
       await flight.decrement("totalSeats", {
         by: seats,
         transaction,
